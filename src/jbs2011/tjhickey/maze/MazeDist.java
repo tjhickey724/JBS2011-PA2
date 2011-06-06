@@ -1,6 +1,7 @@
 package jbs2011.tjhickey.maze;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -16,13 +17,23 @@ public class MazeDist {
 	private MazeView maze;
 	private int penalty;
 	
-	
+	/**
+	 * 
+	 * @param maze
+	 * @param target
+	 * @param penalty
+	 */
 	public MazeDist(MazeView maze,ArrayList<MazePosition> target, int penalty){
 		this.maze = maze;
 		this.penalty = penalty;
 		initDist(target);
 		findMinDist();
 		System.out.println(this.toString()+"\n\n");
+
+	}
+	
+	public MazeDist(MazeView maze,ArrayList<MazePosition> target){
+      this(maze,target,-1);
 
 	}
 	
@@ -53,25 +64,16 @@ public class MazeDist {
 					if (dist[i][j]==-1){
 						if (maze.canMove(p,Direction.NORTH)&&(dist[i][j+1]==k-1)){
 							dist[i][j]=k; continue;
-						}else if ((k>penalty) && (j+1<d)&&(dist[i][j+1]==k-penalty)){
-							dist[i][j]=k; continue;
 						}
-					
 						if(maze.canMove(p,Direction.SOUTH)&&(dist[i][j-1]==k-1)){
-							dist[i][j]=k; continue;
-						}else if ((k>penalty) && (j>0)&&(dist[i][j-1]==k-penalty)){
 							dist[i][j]=k; continue;
 						}
 						
 						if(maze.canMove(p,Direction.WEST)&&(dist[i-1][j]==k-1)){
 							dist[i][j]=k; continue;
-						}else if ((k>penalty) && (i>0)&&(dist[i-1][j]==k-penalty)){
-							dist[i][j]=k; continue;
 						}	
 						
 						if(maze.canMove(p,Direction.EAST)&&(dist[i+1][j]==k-1)){
-							dist[i][j]=k; continue;
-						}else if ((k>penalty) && (i+1<w)&&(dist[i+1][j]==k-penalty)){
 							dist[i][j]=k; continue;
 						}
 					}
@@ -109,17 +111,13 @@ public class MazeDist {
 					System.out.println("space moving "+d+" = "+distance);
 				}
 			}
-			else {
-				// penalty >=0 means we should consider going through walls
-				int distance = minDist(p.move(d))+penalty;
-				if ((penalty > -1) && (distance < currentMin)) {
-					currentMin = distance;
-					minDir = d;
-					System.out.println("wall moving "+d+" = "+distance);
-				}
-			}
 					
 		}
+		if (minDir.equals(Direction.CENTER)){
+			int pick = new Random().nextInt(Direction.values().length);
+			return Direction.values()[pick];
+		}
+		
 		System.out.println("try to move in direction "+minDir);
 		return minDir;
 			
