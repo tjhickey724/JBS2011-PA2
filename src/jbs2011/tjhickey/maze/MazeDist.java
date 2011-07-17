@@ -108,17 +108,13 @@ public class MazeDist {
 				if ( (distance !=-1) && (distance < currentMin)) {
 					currentMin =distance;
 					minDir = d;
-					System.out.println("space moving "+d+" = "+distance);
+//					System.out.println("space moving "+d+" = "+distance);
 				}
 			}
 					
 		}
-		if (minDir.equals(Direction.CENTER)){
-			int pick = new Random().nextInt(Direction.values().length);
-			return Direction.values()[pick];
-		}
-		
-		System.out.println("try to move in direction "+minDir);
+
+//		System.out.println("try to move in direction "+minDir);
 		return minDir;
 			
 		

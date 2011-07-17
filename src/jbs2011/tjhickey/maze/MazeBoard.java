@@ -7,7 +7,7 @@ public class MazeBoard implements MazeView {
   public static final double edginess=0.6;
   public static final double WALL_PROB = 0.25;
   public int width, depth;
-  MazeCell[][] board;
+  private MazeCell[][] board;
   
   public int getWidth(){
 	  return width;
@@ -50,6 +50,30 @@ public class MazeBoard implements MazeView {
 	  }
 	  else
 		  return p;
+  }
+  
+  public static MazeBoard createFullMazeBoard(int w, int d) {
+	  MazeBoard m;
+	  do {
+		  m = new MazeBoard(w,d);
+	  } while (!m.isFull());
+	  System.out.println("mazeboard = "+m);
+	  return m;
+  }
+  
+  private boolean isFull() {
+	  ArrayList<MazePosition> mp = new ArrayList<MazePosition>();
+	  MazePosition p = new MazePosition(0,0);
+	  mp.add(p) ; 
+	  MazeDist dist = new MazeDist(this,mp);
+      for(int i=0;i<this.getWidth(); i++){
+    	  for (int j=0; j<this.getDepth(); j++){
+    		  p.row=i;p.col=j;
+    		  if (dist.minDist(p)==-1) return false;
+    	  }
+      }
+	  
+	  return true;
   }
   
   public MazeBoard(int w, int d){
